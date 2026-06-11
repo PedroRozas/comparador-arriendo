@@ -56,9 +56,9 @@ const rows: readonly RowDef[] = [
   },
   {
     kind: 'metric',
-    label: 'Superficie total',
+    label: 'Superficie útil',
     better: 'high',
-    getValue: (entry) => (entry.metrics.totalArea > 0 ? entry.metrics.totalArea : null),
+    getValue: (entry) => (entry.metrics.usableArea > 0 ? entry.metrics.usableArea : null),
     format: (value) => formatArea(value),
   },
   {

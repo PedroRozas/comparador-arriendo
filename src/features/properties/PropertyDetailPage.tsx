@@ -195,12 +195,16 @@ export const PropertyDetailPage = () => {
     }
   }
 
-  const kpis = [
+  const kpis: Array<{ label: string; value: string; detail?: string }> = [
     { label: 'Arriendo mensual', value: formatCLP(property.monthly_rent) },
     { label: 'Costo de entrada', value: isCurrent ? '$0' : formatCLP(metrics.entryCost) },
-    { label: 'Superficie total', value: metrics.totalArea > 0 ? formatArea(metrics.totalArea) : '—' },
     {
-      label: 'Precio por m²',
+      label: 'Superficie útil',
+      value: metrics.usableArea > 0 ? formatArea(metrics.usableArea) : '—',
+      detail: metrics.patioArea ? `+ ${formatArea(metrics.patioArea)} de patio` : undefined,
+    },
+    {
+      label: 'Precio por m² útil',
       value: metrics.pricePerM2 ? `${formatCLP(Math.round(metrics.pricePerM2))}` : '—',
     },
   ]
@@ -300,6 +304,14 @@ export const PropertyDetailPage = () => {
             <Typography variant="h3" component="p" sx={{ ...tabularNums, mt: 0.5 }}>
               {kpi.value}
             </Typography>
+            {kpi.detail ? (
+              <Typography
+                variant="caption"
+                sx={{ color: tokens.accentBright, fontWeight: 600, ...tabularNums }}
+              >
+                {kpi.detail}
+              </Typography>
+            ) : null}
           </Paper>
         ))}
       </Box>

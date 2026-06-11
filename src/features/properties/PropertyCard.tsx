@@ -120,7 +120,7 @@ export const PropertyCard = ({ property }: PropertyCardProps) => {
             <Stack direction="row" spacing={0.75} sx={{ alignItems: 'center' }}>
               <SquareFootRounded sx={{ fontSize: 16, color: 'text.disabled' }} />
               <Typography variant="caption" sx={{ color: 'text.secondary', ...tabularNums }}>
-                {metrics.totalArea > 0 ? formatArea(metrics.totalArea) : '—'}
+                {metrics.usableArea > 0 ? formatArea(metrics.usableArea) : '—'}
               </Typography>
             </Stack>
             <Stack direction="row" spacing={0.75} sx={{ alignItems: 'center' }}>

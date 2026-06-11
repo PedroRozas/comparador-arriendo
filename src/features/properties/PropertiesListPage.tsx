@@ -41,7 +41,7 @@ const buildHighlights = (properties: PropertyWithRelations[]): HighlightStat[] =
     entry.property.monthly_rent < best.property.monthly_rent ? entry : best,
   )
   const biggest = withMetrics.reduce((best, entry) =>
-    entry.metrics.totalArea > best.metrics.totalArea ? entry : best,
+    entry.metrics.usableArea > best.metrics.usableArea ? entry : best,
   )
   const withPrice = withMetrics.filter((entry) => entry.metrics.pricePerM2 !== null)
   const bestValue =
@@ -60,8 +60,8 @@ const buildHighlights = (properties: PropertyWithRelations[]): HighlightStat[] =
       detail: cheapest.property.alias,
     },
     {
-      label: 'Mayor superficie',
-      value: biggest.metrics.totalArea > 0 ? formatArea(biggest.metrics.totalArea) : '—',
+      label: 'Mayor superficie útil',
+      value: biggest.metrics.usableArea > 0 ? formatArea(biggest.metrics.usableArea) : '—',
       detail: biggest.property.alias,
     },
   ]

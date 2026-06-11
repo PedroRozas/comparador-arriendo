@@ -17,9 +17,9 @@ export const buildAdvantages = (a: BenchmarkEntry, b: BenchmarkEntry): string[] 
     advantages.push(`Entrada ${formatCLP(entrySaving)} más baja`)
   }
 
-  const extraArea = a.metrics.totalArea - b.metrics.totalArea
+  const extraArea = a.metrics.usableArea - b.metrics.usableArea
   if (extraArea > 0) {
-    advantages.push(`+${formatArea(extraArea)} de superficie total`)
+    advantages.push(`+${formatArea(extraArea)} de superficie útil`)
   }
 
   if (a.metrics.pricePerM2 !== null && b.metrics.pricePerM2 !== null) {

@@ -9,7 +9,7 @@ export interface BenchmarkEntry {
 export type WeightKey =
   | 'monthlyRent'
   | 'entryCost'
-  | 'totalArea'
+  | 'usableArea'
   | 'bedrooms'
   | 'patio'
   | 'security'
@@ -19,7 +19,7 @@ export type Weights = Record<WeightKey, number>
 export const WEIGHT_KEYS: readonly WeightKey[] = [
   'monthlyRent',
   'entryCost',
-  'totalArea',
+  'usableArea',
   'bedrooms',
   'patio',
   'security',
@@ -30,7 +30,7 @@ export const WEIGHT_MAX = 10
 export const DEFAULT_WEIGHTS: Weights = {
   monthlyRent: 8,
   entryCost: 5,
-  totalArea: 7,
+  usableArea: 7,
   bedrooms: 6,
   patio: 4,
   security: 3,
@@ -39,7 +39,7 @@ export const DEFAULT_WEIGHTS: Weights = {
 export const weightLabels: Record<WeightKey, string> = {
   monthlyRent: 'Precio mensual',
   entryCost: 'Costo de entrada',
-  totalArea: 'Superficie total',
+  usableArea: 'Superficie útil',
   bedrooms: 'Dormitorios',
   patio: 'Patio',
   security: 'Seguridad',
@@ -78,7 +78,7 @@ interface DimensionConfig {
 const dimensions: readonly DimensionConfig[] = [
   { key: 'monthlyRent', betterDirection: 'low', rawValue: (entry) => entry.property.monthly_rent },
   { key: 'entryCost', betterDirection: 'low', rawValue: (entry) => entry.metrics.entryCost },
-  { key: 'totalArea', betterDirection: 'high', rawValue: (entry) => entry.metrics.totalArea },
+  { key: 'usableArea', betterDirection: 'high', rawValue: (entry) => entry.metrics.usableArea },
   { key: 'bedrooms', betterDirection: 'high', rawValue: (entry) => entry.metrics.bedroomCount },
   { key: 'patio', betterDirection: 'high', rawValue: (entry) => patioScore(entry.property) },
   { key: 'security', betterDirection: 'high', rawValue: (entry) => securityScore(entry.property) },
@@ -114,7 +114,7 @@ export const scoreEntries = (entries: BenchmarkEntry[], weights: Weights): Score
     const normalized: NormalizedScores = {
       monthlyRent: 0,
       entryCost: 0,
-      totalArea: 0,
+      usableArea: 0,
       bedrooms: 0,
       patio: 0,
       security: 0,

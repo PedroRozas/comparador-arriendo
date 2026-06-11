@@ -4,7 +4,7 @@ export const rectArea = (length: number | null, width: number | null): number | 
   length !== null && width !== null ? length * width : null
 
 export interface DerivedMetrics {
-  totalArea: number
+  usableArea: number
   entryCost: number
   pricePerM2: number | null
   bedroomCount: number
@@ -27,7 +27,11 @@ export const computeMetrics = (property: PropertyWithRelations): DerivedMetrics 
     (sum, room) => sum + (rectArea(room.length, room.width) ?? 0),
     0,
   )
-  const totalArea = roomsArea + (livingDiningArea ?? 0) + (kitchenArea ?? 0) + (patioArea ?? 0)
+  const bathroomsArea = property.bathrooms.reduce(
+    (sum, bathroom) => sum + (rectArea(bathroom.length, bathroom.width) ?? 0),
+    0,
+  )
+  const usableArea = roomsArea + bathroomsArea + (livingDiningArea ?? 0) + (kitchenArea ?? 0)
 
   const brokerage = property.has_brokerage ? (property.brokerage_amount ?? 0) : 0
   const entryCost =
@@ -41,9 +45,9 @@ export const computeMetrics = (property: PropertyWithRelations): DerivedMetrics 
   const tubCount = property.bathrooms.filter((bathroom) => bathroom.type === 'tub').length
 
   return {
-    totalArea,
+    usableArea,
     entryCost,
-    pricePerM2: totalArea > 0 ? property.monthly_rent / totalArea : null,
+    pricePerM2: usableArea > 0 ? property.monthly_rent / usableArea : null,
     bedroomCount: property.rooms.length,
     bathroomCount: property.bathrooms.length,
     tubCount,
