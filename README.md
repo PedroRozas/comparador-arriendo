@@ -4,6 +4,20 @@ Aplicación web personal para registrar casas en arriendo y compararlas con dato
 
 **Stack:** Vite + React + TypeScript estricto · MUI con theme custom (dark editorial) · framer-motion · recharts · React Router · React Hook Form + Zod · Supabase (Auth + Postgres con RLS + Storage privado).
 
+## Usa tu propia instancia
+
+El repositorio no incluye ninguna base de datos ni credenciales. Cada persona levanta la app con **su propio proyecto de Supabase** (el plan gratuito alcanza), así que tus datos y fotos quedan solo en tu cuenta. Los pasos de abajo te llevan de cero a la app corriendo.
+
+**Requisitos:**
+
+- Node.js `^20.19.0` o `>=22.12.0` (lo exige Vite).
+- Una cuenta en [supabase.com](https://supabase.com).
+
+```bash
+git clone https://github.com/PedroRozas/comparador-arriendo.git
+cd comparador-arriendo
+```
+
 ---
 
 ## 1. Crear el proyecto en Supabase
@@ -91,6 +105,18 @@ npm run preview    # sirve el build local
 npm run lint       # eslint
 ```
 
+## 8. (Opcional) Publicarlo
+
+El build es un sitio estático (`dist/`), así que sirve cualquier hosting estático. Por ejemplo, Vercel o Netlify:
+
+1. Importa tu fork del repositorio.
+2. Configura el build: comando `npm run build`, carpeta de salida `dist`.
+3. Agrega las variables de entorno `VITE_SUPABASE_URL` y `VITE_SUPABASE_ANON_KEY` con los valores de tu proyecto.
+4. La app usa rutas del navegador (`BrowserRouter`), así que cualquier ruta debe responder con `index.html`:
+   - **Vercel:** crea `vercel.json` con `{ "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }] }`.
+   - **Netlify:** crea `public/_redirects` con la línea `/* /index.html 200`.
+5. En Supabase, cambia **Authentication → URL Configuration → Site URL** por la URL publicada, para que el enlace de confirmación de correo apunte ahí.
+
 ---
 
 ## Estructura
@@ -107,6 +133,7 @@ src/
   layout/         shell con navbar
 supabase/
   migrations/     0001_init.sql (tablas, RLS, storage, allowlist opcional)
+                  0002_dimensiones_y_casa_actual.sql (largo × ancho, casa actual)
 ```
 
 ## Notas de seguridad
@@ -115,3 +142,7 @@ supabase/
 - Sesión persistente con refresh automático (`persistSession: true`, `autoRefreshToken: true`).
 - Todas las rutas de la app van detrás de `<ProtectedRoute>`; sin sesión se redirige a `/login`.
 - Las fotos viven en un bucket privado bajo `{user_id}/...` y se sirven con signed URLs que expiran.
+
+## Licencia
+
+MIT. Ver [LICENSE](LICENSE).
